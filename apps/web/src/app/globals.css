@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+/* Design tokens — dark charcoal / deep green with emerald accent */
+@theme {
+  --color-ink-950: #07100c;
+  --color-ink-900: #0b1511;
+  --color-ink-800: #111e18;
+  --color-ink-700: #182a22;
+  --color-ink-600: #22382e;
+  --color-line: rgb(255 255 255 / 0.08);
+  --color-pitch-400: #34e39b;
+  --color-pitch-500: #10d081;
+  --color-pitch-600: #0aa866;
+  --color-chalk: #f4f7f5;
+  --color-mute: #8fa59a;
+  --color-gold: #f5c451;
+  --font-sans: var(--font-inter), "Noto Sans Khmer", system-ui, sans-serif;
+  --font-display: var(--font-display), var(--font-inter), "Noto Sans Khmer", sans-serif;
+  --radius-card: 1.25rem;
+}
+
+html { color-scheme: dark; }
+body {
+  background: var(--color-ink-950);
+  color: var(--color-chalk);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+:focus-visible { outline: 2px solid var(--color-pitch-400); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }

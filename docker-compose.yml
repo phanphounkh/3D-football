@@ -1,0 +1,36 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: pitchside
+      POSTGRES_PASSWORD: pitchside
+      POSTGRES_DB: pitchside
+    ports: ["5432:5432"]
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pitchside"]
+      interval: 5s
+      retries: 10
+  redis:
+    image: redis:7-alpine
+    ports: ["6379:6379"]
+  api:
+    build: ./apps/api
+    env_file: [.env.example]
+    environment:
+      DATABASE_URL: postgresql+asyncpg://pitchside:pitchside@db:5432/pitchside
+      REDIS_URL: redis://redis:6379/0
+      CORS_ORIGINS: '["http://localhost:3000","http://localhost:3200"]'
+    ports: ["8001:8000"]
+    volumes: [./apps/api:/app]
+    depends_on:
+      db: { condition: service_healthy }
+  web:
+    build: ./apps/web
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8001/api/v1
+    ports: ["3000:3000"]
+    volumes: [./apps/web:/app, /app/node_modules, /app/.next]
+    depends_on: [api]
+volumes:
+  pgdata:
